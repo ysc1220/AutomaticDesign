@@ -59,7 +59,7 @@ def train_model_hyperopt(hyperspace, X, y, lname,
     cb = [earlystop]
     history = model.fit(X_train, y_train,
                         epochs=epochs,
-                        verbose=2,
+                        verbose=0,
                         batch_size=hyperspace['batch_size'],
                         validation_data=val_data,
                         callbacks=cb,)
@@ -98,7 +98,7 @@ def optimize(X, y, lname,
              model=False):
     '''
     Model hyperparameter optimization.
-    
+
     Parameters
     ---
         X: np.array, features

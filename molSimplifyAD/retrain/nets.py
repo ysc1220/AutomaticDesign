@@ -3,7 +3,7 @@ import tensorflow as tf
 from keras import regularizers
 from keras.layers import Dense, Dropout, Input, BatchNormalization, Activation, Add, Concatenate, LeakyReLU
 from keras.models import Model
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 from sklearn.metrics import roc_auc_score, r2_score
 import keras.backend as K
 from keras.callbacks import Callback
@@ -199,7 +199,7 @@ def ANN_tf2(hyperspace, input_len, lname, regression=True):
         else:
             outlayer[ii] = BatchNormalization(name='output-%d-%s' % (ii, ln))(last_dense[ii])
             _loss_type = 'mse'
-            metrics = ['mae', tf.keras.metrics.MeanAbsolutePercentageError(name="mape"), 
+            metrics = ['mae', tf.keras.metrics.MeanAbsolutePercentageError(name="mape"),
                        scaled_mae, r2_val]
         loss_weights.append(1.0)
         loss_type.append(_loss_type)
@@ -283,7 +283,7 @@ def createKerasModel(config_dict, d, p):
                                            drop=config_dict["decayrate"], \
                                            epochs_drop=config_dict["decayinterval"])
 
-    # build optimizer 
+    # build optimizer
     sgd_optim = keras.optimizers.SGD(lr=this_lr_decay(0), momentum=config_dict['momentum'],
                                      decay=0.0, nesterov=config_dict['nest'])
 
