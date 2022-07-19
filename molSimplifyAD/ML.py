@@ -131,14 +131,6 @@ def optimize_ann(ml):
     objective_func  =   partial(train_model_hyperopt,
                                 ml = ml,
                                 save_model = False)
-                                #X   =   np.array(ml.X_train),
-                                #y   =   np.array(ml.y_train),
-                                #lname   =   ml.lnames,
-                                #regression  =   True,
-                                #epochs  =   1000,
-                                #X_val   =   np.array(ml.X_val),
-                                #y_val   =   np.array(ml.y_val),
-                                #input_model =   False)
 
     cput0   =   ml.set_timer()
     trials  =   ho.Trials()
@@ -160,14 +152,6 @@ def optimize_ann(ml):
     res =   train_model_hyperopt(best_params,
                                  ml = ml,
                                  save_model = True)
-                                 #np.array(ml.X_train),
-                                 #np.array(ml.y_train),
-                                 #ml.lnames,
-                                 #regression =   True,
-                                 #epochs =   1000,
-                                 #X_val  =   np.array(ml.X_val),
-                                 #y_val  =   np.array(ml.y_val),
-                                 #input_model    =   False)
 
     best_params["epochs"]   =   res["epochs"]
     ml.best_params  =   best_params
@@ -219,7 +203,7 @@ class ML(Logger):
         self.drop_features()
         self.normalize()
         self.optimize_ann()
-        self.evaluate_ann()
+        self.evaluate_ann(ml.model)
 
     drop_features   =   drop_features
     normalize       =   normalize

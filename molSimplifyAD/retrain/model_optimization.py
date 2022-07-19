@@ -44,7 +44,7 @@ def train_model_hyperopt(hyperspace, ml, save_model = False):
         tf.compat.v1.disable_eager_execution()  ## disable eager in tf2.0 for faster training
 
     ml.nit  +=  1
-    ml.info("Iteration # %d"%ml.nit)
+    ml.info("# Iteration %d"%ml.nit)
     for key, val in hyperspace.items():
         ml.info("\t%s %s"%(key, str(val)))
     cput0   =   ml.set_timer()
@@ -98,7 +98,7 @@ def train_model_hyperopt(hyperspace, ml, save_model = False):
     epochs = len(history.history[list(history.history.keys())[0]])
 
     ml.info("# loss: "+str(obj))
-    ml.timer("iteration # %d"%ml.nit, *cput0)
+    ml.timer("Iteration %d"%ml.nit, *cput0)
     ml.info("")
 
     if save_model:
