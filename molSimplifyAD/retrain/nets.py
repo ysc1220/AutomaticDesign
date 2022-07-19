@@ -109,10 +109,10 @@ def build_ANN(hyperspace, input_len, lname, regression=True):
         model: keras.model object
     '''
     if tf.__version__ >= '2.0.0':
-        print("====Tensorflow version >= 2.0.0====")
+        #print("====Tensorflow version >= 2.0.0====")
         model = ANN_tf2(hyperspace, input_len, lname, regression=regression)
     else:
-        print("====Tensorflow version < 2.0.0====")
+        #print("====Tensorflow version < 2.0.0====")
         model = ANN(hyperspace, input_len, lname, regression=regression)
     return model
 

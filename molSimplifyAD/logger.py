@@ -156,6 +156,9 @@ def stdout(rec, msg, *args):
         flush(rec, msg, *args)
     sys.stdout.write('>>> %s\n' % msg)
 
+def set_timer(rec):
+    return process_clock(), perf_counter()
+
 def timer(rec, msg, cpu0=None, wall0=None):
     if cpu0 is None:
         cpu0 = rec._t0
@@ -205,6 +208,7 @@ class Logger(object):
     debug2 = debug2
     debug3 = debug3
     debug4 = debug4
+    set_timer   =   set_timer
     timer = timer
     timer_debug1 = timer_debug1
 
