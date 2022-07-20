@@ -44,13 +44,13 @@ def normalize(ml):
     ml.y_train  =   ml.y_scaler.transform(y_train)
     ml.y_val    =   ml.y_scaler.transform(y_val)
 
-    ml.info("Normalization finished.\n")
+    ml.debug("Normalization finished.\n")
 
 def train_ann(ml, params):
-    X_train =   np.array(ml.X_train)
-    X_val   =   np.array(ml.X_val)
-    y_train =   np.array(ml.y_train)
-    y_val   =   np.array(ml.y_val)
+    X_train =   ml.X_train
+    X_val   =   ml.X_val
+    y_train =   ml.y_train
+    y_val   =   ml.y_val
 
     model   =   build_ANN(params,
                           input_len = X_train.shape[-1],
@@ -66,10 +66,10 @@ def train_ann(ml, params):
     return model
 
 def evaluate_ann(ml, model):
-    X_train =   np.array(ml.X_train)
-    X_val   =   np.array(ml.X_val)
-    y_train =   np.array(ml.y_train)
-    y_val   =   np.array(ml.y_val)
+    X_train =   ml.X_train
+    X_val   =   ml.X_val
+    y_train =   ml.y_train
+    y_val   =   ml.y_val
 
     res_train   =   model.evaluate(X_train, y_train)
     res_val     =   model.evaluate(X_val, y_val)
