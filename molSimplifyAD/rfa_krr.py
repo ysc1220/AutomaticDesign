@@ -218,6 +218,9 @@ class RFA_KRR(ML):
         model   =   self.train(best_params, save_model = True)
         r2, mae =   self.evaluate(model)
 
+        self.info("# Best_params:")
+        for key, val in best_params.items():
+            self.info("\t%s:\t%s"%(key, str(val)))
         self.info("# Model performance")
         self.info("\tr2: %f", r2)
         self.info("\tmae: %f", mae)
