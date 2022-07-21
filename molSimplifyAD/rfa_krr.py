@@ -5,6 +5,7 @@ import pandas as pd
 import sklearn as sk
 import hyperopt as ho
 import pickle
+import json
 
 import operator
 from keras import backend as K
@@ -54,6 +55,11 @@ def initial_feature_ranking(ml):
 
     ml.fnames_sorted   =   [elem[0] for elem in sorted_x]
     ml.fscore_dict  =   fscore_dict
+
+    if hasattr(ml, "filname_fi_full"):
+        with open(ml.filname_fi_full, "w") as fil:
+            json.dump(fscore_dict, fil, index = 4)
+        ml.info("Feature importance of full features written in %s", ml.filname_fi_full)
 
     ml.debug("# Initial features: %d", len(fnames_selected))
     i   =   0
@@ -129,8 +135,15 @@ def optimize_features(ml):
         nit +=  1
 
     ml.info("# Number of selected features: %d", len(ml.fnames))
+    fscore_dict =   {}
     for i, fname in enumerate(ml.fnames):
         ml.info("\t%d\t%s\t%f", i, fname, ml.fscore_dict[fname])
+        fscore_dict[fname]  =   ml.fscore_dict[fname]
+    if hasattr(ml, "filname_fi_selected"):
+        with open(ml.filname_fi_selected, "w") as fil:
+            json.dump(fscore_dict, fil, indent = 4)
+        ml.info("Feature importance of selected features written in %s", ml.filname_fi_selected)
+
     ml.timer("Feature selection", *cput1)
     ml.info("******** End of feature selection ********")
 
@@ -178,6 +191,15 @@ def evaluate(ml, model):
                         ml.y_train).reshape(-1, )
     y_val_true      =   ml.y_scaler.inverse_transform(
                         ml.y_val).reshape(-1, )
+
+    if hasattr(ml, "filname_y"):
+        df  =   pd.DataFrame([y_train_true, y_val_true,
+                              y_train_pred, y_val_pred],
+                             columns = [
+                              "y_train_true", "y_val_true",
+                              "y_train_pred", "y_val_pred"])
+        df.to_csv(ml.filname_y, index = False)
+        ml.info("y values written in %s", ml.filname_y)
 
     return sk.metrics.r2_score(y_val_true, y_val_pred), \
             np.mean(np.abs(y_val_true-y_val_pred))
