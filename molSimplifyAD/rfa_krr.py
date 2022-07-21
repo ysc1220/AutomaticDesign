@@ -157,6 +157,7 @@ def train(ml, params, save_model = False):
     if save_model:
         with open(ml.filname_model, "wb") as fil:
             pickle.dump(model, fil)
+        ml.info("Model saved to %s", ml.filname_model)
 
     return model
 
@@ -193,12 +194,11 @@ def evaluate(ml, model):
                         ml.y_val).reshape(-1, )
 
     if hasattr(ml, "filname_y"):
-        df  =   pd.DataFrame([y_train_true, y_val_true,
-                              y_train_pred, y_val_pred],
-                             columns = [
-                              "y_train_true", "y_val_true",
-                              "y_train_pred", "y_val_pred"])
-        df.to_csv(ml.filname_y, index = False)
+        with open(ml.filname_y, "wb") as fil:
+            pickle.dump({"y_train_true": list(y_train_true),
+                       "y_val_true": list(y_val_true),
+                       "y_train_pred": list(y_train_pred),
+                       "y_val_pred": list(y_val_pred)}, fil)
         ml.info("y values written in %s", ml.filname_y)
 
     return sk.metrics.r2_score(y_val_true, y_val_pred), \

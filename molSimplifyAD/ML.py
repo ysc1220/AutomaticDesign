@@ -79,12 +79,20 @@ def evaluate_ann(ml, model):
         res_train_dict[key] =   res_train[i]
         res_val_dict[key]   =   res_val[i]
 
-    y_train_true    =   ml.y_scaler.inverse_transform(y_train)
-    y_val_true      =   ml.y_scaler.inverse_transform(y_val)
+    y_train_true    =   ml.y_scaler.inverse_transform(y_train).reshape(-1,)
+    y_val_true      =   ml.y_scaler.inverse_transform(y_val).reshape(-1,)
     y_train_pred    =   ml.y_scaler.inverse_transform(
-                                model.predict(X_train))
+                                model.predict(X_train)).reshape(-1,)
     y_val_pred      =   ml.y_scaler.inverse_transform(
-                                model.predict(X_val))
+                                model.predict(X_val)).reshape(-1,)
+
+    if hasattr(ml, "filname_y"):
+        with open(ml.filname_y, "wb") as fil:
+            pickle.dump({"y_train_true": list(y_train_true),
+                       "y_val_true": list(y_val_true),
+                       "y_train_pred": list(y_train_pred),
+                       "y_val_pred": list(y_val_pred)}, fil)
+        ml.info("y values written in %s", ml.filname_y)
 
     res_train_dict["mae_org"]   =   sk.metrics.mean_absolute_error(
                                     y_train_true, y_train_pred)
