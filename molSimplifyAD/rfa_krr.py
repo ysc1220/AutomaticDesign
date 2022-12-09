@@ -5,7 +5,6 @@ import pandas as pd
 import sklearn as sk
 import hyperopt as ho
 import pickle
-import json
 
 import operator
 from keras import backend as K
@@ -57,8 +56,8 @@ def initial_feature_ranking(ml):
     ml.fscore_dict  =   fscore_dict
 
     if hasattr(ml, "filname_fi_full"):
-        with open(ml.filname_fi_full, "w") as fil:
-            json.dump(fscore_dict, fil, index = 4)
+        with open(ml.filname_fi_full, "wb") as fil:
+            pickle.dump(fscore_dict, fil)
         ml.info("Feature importance of full features written in %s", ml.filname_fi_full)
 
     ml.debug("# Initial features: %d", len(fnames_selected))
@@ -140,8 +139,8 @@ def optimize_features(ml):
         ml.info("\t%d\t%s\t%f", i, fname, ml.fscore_dict[fname])
         fscore_dict[fname]  =   ml.fscore_dict[fname]
     if hasattr(ml, "filname_fi_selected"):
-        with open(ml.filname_fi_selected, "w") as fil:
-            json.dump(fscore_dict, fil, indent = 4)
+        with open(ml.filname_fi_selected, "wb") as fil:
+            pickle.dump(fscore_dict, fil)
         ml.info("Feature importance of selected features written in %s", ml.filname_fi_selected)
 
     ml.timer("Feature selection", *cput1)

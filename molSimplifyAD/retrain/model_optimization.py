@@ -104,6 +104,7 @@ def train_model_hyperopt(hyperspace, ml, save_model = False):
     if save_model:
         model.save(ml.filname_model)
         ml.info("Model saved to "+ml.filname_model)
+        ml.model    =   model
 
     K.clear_session()
 
