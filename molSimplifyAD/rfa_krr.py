@@ -170,6 +170,10 @@ def train_hyperopt(params, ml):
     return mae
 
 def optimize(ml):
+    # Normalize in case the list of features changed
+    ml.normalize()
+    print(ml.X_train.shape)
+
     objective_func  =   partial(train_hyperopt, ml = ml)
     trials  =   ho.Trials()
     best_params =   ho.fmin(objective_func,
