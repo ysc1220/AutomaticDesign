@@ -102,6 +102,7 @@ def optimize_features(ml):
         cput0   =   ml.set_timer()
 
         for i, fname in enumerate(fnames_sorted):
+            cput1   =   ml.set_timer()
             ml.debug("\t\tInner iteration %d / %d", i, len(fnames_sorted))
             ml.debug("\t\tEvaluating the feature "+fname)
             ml.fnames.append(fname)
@@ -124,6 +125,7 @@ def optimize_features(ml):
                 ml.debug("\t\tFeature %s discarded", fname)
 
             ml.debug("\t\tCurrent best: MAE - %f r2 - %f", best_mae, best_r2)
+            ml.timer("Inner iteration %d"%i, *cput1)
 
         for fname in added_feature:
             ml.fnames_selected.append(fname)
